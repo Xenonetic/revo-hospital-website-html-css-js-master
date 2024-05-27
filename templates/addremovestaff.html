@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Staff Management</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            background-color: rgb(255, 255, 255);
+            margin-top:-200px; /* Move container down by 200px */
+            position: relative;
+            z-index: 1;
+        }
+        .start-session-button {
+            font-size: 1.5rem;
+            padding: 20px 40px;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .start-session-button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.4);
+        }
+        .modal-content {
+            border-radius: 12px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        body {
+            background-image: url('{{ url_for("static", filename="images/8768.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 0;
+        }
+        .l-navbar.show {
+            z-index: 2;
+        }
+    </style>
+</head>
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt="Profile Picture"> </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <a href="#" class="nav_logo">
+                    <i class='bx bx-layer nav_logo-icon'></i>
+                    <span class="nav_logo-name">Eltaqa Clinic</span>
+                </a>
+                <div class="nav_list">
+                    <a href="{{ url_for('staff_homepage') }}" class="nav_link active">
+                        <i class='bx bx-grid-alt nav_icon'></i>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+                    <a href="{{ url_for('addremovestaff') }}" class="nav_link">
+                        <i class='bx bx-user nav_icon'></i>
+                        <span class="nav_name">Staff System</span>
+                    </a>
+                </div>
+            </div>
+            <a href="#" class="nav_link">
+                <i class='bx bx-log-out nav_icon'></i>
+                <span class="nav_name">SignOut</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="container main-content">
+        <div class="custom-container">
+            <h2 class="text-center mb-4">Staff List</h2>
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>Department</th>
+                            <th>Hire Date</th>
+                            <th>Salary</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for staff in staff_list %}
+                        <tr>
+                            <td>{{ staff.id }}</td>
+                            <td>{{ staff.full_name }}</td>
+                            <td>{{ staff.email }}</td>
+                            <td>{{ staff.position }}</td>
+                            <td>{{ staff.department }}</td>
+                            <td>{{ staff.hire_date }}</td>
+                            <td>{{ staff.salary }}</td>
+                            <td>{{ staff.phone_number }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                    Add Staff
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeStaffModal">
+                    Remove Staff
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStaffModalLabel">Add New Staff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('add_staff') }}" method="post">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="full_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="role" name="role" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="department" class="form-label">Department</label>
+                            <input type="text" class="form-control" id="department" name="department" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Staff</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove Staff Modal -->
+    <div class="modal fade" id="removeStaffModal" tabindex="-1" aria-labelledby="removeStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeStaffModalLabel">Remove Staff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('remove_staff') }}" method="post">
+                        <div class="mb-3">
+                            <label for="staffId" class="form-label">Staff ID</label>
+                            <input type="text" class="form-control" id="staffId" name="staff_id" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Remove Staff</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    bodypd = document.getElementById(bodyId),
+                    headerpd = document.getElementById(headerId)
+
+                // Validate that all variables exist
+                if (toggle && nav && bodypd && headerpd) {
+                    toggle.addEventListener('click', () => {
+                        // show navbar
+                        nav.classList.toggle('show')
+                        // change icon
+                        toggle.classList.toggle('bx-x')
+                        // add padding to body
+                        bodypd.classList.toggle('body-pd')
+                        // add padding to header
+                        headerpd.classList.toggle('body-pd')
+                    })
+                }
+            }
+
+            showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+            /*===== LINK ACTIVE =====*/
+            const linkColor = document.querySelectorAll('.nav_link')
+
+            function colorLink() {
+                if (linkColor) {
+                    linkColor.forEach(l => l.classList.remove('active'))
+                    this.classList.add('active')
+                }
+            }
+            linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart clinic Patient Page</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- normalize css -->
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='normalize.css') }}">
+    
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+</head>
+
+<style>
+     .nav-item.dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        .nav-item.dropdown .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            list-style-type: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-menu li a {
+            color: #333333;
+            
+            text-decoration: none;
+        }
+
+
+        /* Doctor Slider Styles */
+.doctor-slider {
+    background-color: #f8f8f8;
+    overflow: hidden; /* Hide the scrollbar */
+}
+
+.doctor-slider .container {
+    max-width: 500px;
+    margin: auto;
+    padding: 40px 0;
+}
+
+.doctor-slider .doctor-slider-inner {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer/Edge */
+}
+
+.doctor-slider .doctor-slider-inner::-webkit-scrollbar {
+    display: none; /* WebKit browsers */
+}
+
+.doctor-slider .slider-item {
+    min-width: 300px;
+    flex: 0 0 auto;
+    margin-right: 20px;
+    scroll-snap-align: start;
+}
+
+.doctor-slider .slider-item img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.doctor-slider .slider-item h3,
+.doctor-slider .slider-item p {
+    margin-top: 10px;
+    text-align: center;
+}
+.doctor-slider .slider-item img {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        max-height: 300px; /* Adjust the maximum height as needed */
+        border-radius: 8px;
+}
+
+
+</style>
+<body>
+
+
+    
+    <!-- header -->
+    <header class = "header bg-blue">
+        <nav class = "navbar bg-blue">
+            <div class = "container flex">
+                <a href="patient_homepage.html" class="navbar-brand">
+                    <img src="{{ url_for('static', filename='images/031.png') }}" alt="site logo" class="logo-img"height=100px width="1000px">
+                </a>
+                </a>
+                <button type = "button" class = "navbar-show-btn">
+                    <img src = "{{ url_for('static', filename='images/ham-menu-icon.png') }}">
+                </button>
+
+                <div class = "navbar-collapse bg-white">
+                    <button type = "button" class = "navbar-hide-btn">
+                        <img src = "{{ url_for('static', filename='images/close-icon.png')}}">
+                    </button>
+                    <ul class = "navbar-nav">
+                        <li class = "nav-item">
+                            <a href = "#" class = "nav-link">Home</a>
+                        </li>
+                        <li class = "nav-item">
+                            <a href = "#about" class = "nav-link">About</a>
+                        </li>
+                        <li class = "nav-item">
+                            <a href = "{{ url_for('laboratory') }}" class = "nav-link">Service</a>
+                        </li>
+                        <li class = "nav-item">
+                            <a href = "#doc-panel" class = "nav-link">Doctors</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="{{ url_for('departments') }}" class="nav-link">Departments <i class="fas fa-chevron-down"></i></a>
+                                
+                        </li>
+                        <li class = "nav-item">
+                            <a href = "#footer" class = "nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </div> 
+            </div>
+        </nav>
+
+        <div class = "header-inner text-white text-center">
+            <div class = "container grid">
+                <div class = "header-inner-left">
+                    <h1>your most trusted<br> <span>health partner</span></h1>
+                    <p class = "lead">the best match services for you</p>
+                    <p class = "text text-md"></p>
+                    <div class = "btn-group">
+                        <a href = "{{ url_for('login') }}" class = "btn btn-light-blue">Login</a>
+                    </div>
+                </div>
+                <div class = "header-inner-right">
+                    <img src = "{{ url_for('static', filename='images/header.png') }}">
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end of header -->
+
+    <main>
+        <!-- about section -->
+        <section id = "about" class = "about py">
+            <div class = "about-inner">
+                <div class = "container grid">
+                    <div class = "about-left text-center">
+                        <div class = "section-head">
+                            <h2>About Us</h2>
+                            <div class = "border-line"></div>
+                        </div>
+                        <p class = "text text-lg">Discover a new era in healthcare at our Smart Clinic, blending innovative technology with compassionate care. Experience personalized services, advanced diagnostics, and expert treatment from a dedicated team focused on your well-being. We're here to guide you towards optimal health with empathy and expertise.</p>
+                    </div>
+                    <div class = "about-right flex">
+                        <div class = "img">
+                            <img src = "{{ url_for('static', filename='images/about-img.png') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end of about section -->
+
+        <!-- banner one -->
+        <section id = "banner-one" class = "banner-one text-center">
+            <div class = "container text-white">
+                <blockquote class = "lead"><i class = "fas fa-quote-left"></i> When you are young and healthy, it never occurs to you that in a single second your whole life could change. <i class = "fas fa-quote-right"></i></blockquote>
+                <small class = "text text-sm">- Anonim Nano</small>
+            </div>
+        </section>
+        <!-- end of banner one -->
+
+        <!-- services section -->
+        <section id = "services" class = "services py">
+            <div class = "container">
+                <div class = "section-head text-center">
+                    <h2 class = "lead">The Best Doctor gives the least medicines</h2>
+                    <p class = "text text-lg"></p>
+                    <div class = "line-art flex">
+                        <div></div>
+                        <img src = "{{ url_for('static', filename='images/4-dots.png') }}">
+                        <div></div>
+                    </div>
+                </div>
+                <div class = "services-inner text-center grid">
+                    <article class = "service-item">
+                        <div class = "icon">
+                            <img src = "{{ url_for('static', filename='images/service-icon-1.png') }}">
+                        </div>
+                        <h3>Emergency Help</h3>
+                        <!--<p class = "text text-sm">write here</p>-->
+                    </article>
+
+                    <article class = "service-item">
+                        <div class = "icon">
+                            <img src = "{{ url_for('static', filename='images/service-icon-2.png') }}">
+                        </div>
+                        <h3>Laboratory</h3>
+                        <!--<p class = "text text-sm">write here</p>-->
+                    </article>
+
+                    <article class = "service-item">
+                        <div class = "icon">
+                            <img src = "{{ url_for('static', filename='images/service-icon-2.png') }}">
+                        </div>
+                        <h3>Cardiac Monitoring</h3>
+                        <!--<p class = "text text-sm">write here</p>-->
+                    </article>
+
+                    <article class = "service-item">
+                        <div class = "icon">
+                            <img src = "{{ url_for('static', filename='images/service-icon-1.png') }}">
+                        </div>
+                        <h3>First Aid</h3>
+                        <!--<p class = "text text-sm">write here</p>-->
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!-- end of services section -->
+
+        <!-- banner two section -->
+        <section id = "banner-one" class = "banner-one text-center">
+            <div class = "container text-white">
+                <blockquote class = "lead"><i class = "fas fa-quote-left"></i> When you are young and healthy, it never occurs to you that in a single second your whole life could change. <i class = "fas fa-quote-right"></i></blockquote>
+                <small class = "text text-sm">- Anonim Nano</small>
+            </div>
+        </section>
+        <!-- end of banner two section -->
+
+        <!-- doctors section -->
+        <!-- doctors section -->
+<section id="doc-panel" class="doc-panel py">
+    <div class="container">
+        <div class="section-head">
+            <h2>Our Doctor Panel</h2>
+        </div>
+
+        <div class="doc-panel-inner grid">
+            <div class="doc-panel-item">
+                <div id="doctor-slider" class="doctor-slider">
+                    <div class="doctor-slider-inner">
+                        <div class="slider-item">
+                            <img src="{{ url_for('static', filename='images/doc-5.png')}}" alt="Doctor 1">
+                            <h3>Dr. John Doe</h3>
+                            <p>Cardiologist</p>
+                        </div>
+                        <div class="slider-item">
+                            <img src="{{ url_for('static', filename='images/doc-1.png')}}" alt="Doctor 2">
+                            <h3>Dr. Joe Smith</h3>
+                            <p>Surgeon</p>
+                        </div>
+
+                        <div class="slider-item">
+                            <img src="{{ url_for('static', filename='images/post-2.jpg')}}" alt="Doctor 2">
+                            <h3>Dr. jose</h3>
+                            <p>Neurologist</p>
+                        </div>
+
+
+                        <div class="slider-item">
+                            <img src="{{ url_for('static', filename='images/doc-2.png')}}" alt="Doctor 2">
+                            <h3>Dr. kate</h3>
+                            <p>ENT</p>
+                        </div>
+
+
+
+                        <div class="slider-item">
+                            <img src="{{ url_for('static', filename='images/doc-4.png')}}" alt="Doctor 2">
+                            <h3>Dr. kathy</h3>
+                            <p>Emergency</p>
+                        </div>
+
+
+                        
+
+                
+                        <!-- Add more slider items as needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- end of doctors section -->
+
+        <!-- package services section -->
+        <section id = "package-service" class = "package-service py text-center">
+            <div class = "container">
+                <div class = "package-service-head text-white">
+                    <h2>Quick services</h2>
+                    <!--<p class = "text text-lg">Best service package for you</p>-->
+                </div>
+
+                <div class = "package-service-inner grid">
+
+                    <div class = "package-service-item bg-white">
+                        <div class = "icon flex">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <h3>Book Appointment</h3>
+                        <a href = "#" class = "btn btn-blue">Book</a>
+                    </div>
+
+                    <div class = "package-service-item bg-white">
+                        <div class = "icon flex">
+                            <i class = "fas fa-calendar-alt fa-2x"></i>
+                        </div>
+                        <h3>My Appointments</h3>
+                        
+                        <a href = "#" class = "btn btn-blue">View</a>
+                    </div>
+
+                    <div class = "package-service-item bg-white">
+                        <div class = "icon flex">
+                            <i class="fa-solid fa-file-medical"></i> <!-- look here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1-->
+                        </div>
+                        <h3>Medical Records</h3>
+                        <a href = "#" class = "btn btn-blue">View</a>
+                    </div>
+
+                    
+                    
+                    
+                </div>
+            </div>
+        </section>
+        <!-- end of package services section -->
+
+        <!-- contact section -->
+        
+        <!-- end of contact section -->
+    </main>
+
+    <!-- footer  -->
+    <footer id = "footer" class = "footer text-center">
+        <div class = "container">
+            <div class = "footer-inner text-white py grid">
+                <div class = "footer-item">
+                    <div class = "icon">
+                        <img src = "{{ url_for('static', filename='images/031.png')}}">
+                    </div>
+                    
+                </div>
+
+                <div class = "footer-item">
+                    <h3 class = "footer-head">tags</h3>
+                    <ul class = "tags-list flex">
+                        <li>medical care</li>
+                        <li>emergency</li>
+                        <li>therapy</li>
+                        <li>medication</li>
+                        <li>nurse</li>
+                    </ul>
+                </div>
+
+                <div class = "footer-item">
+                    <h3 class = "footer-head">Quick Links</h3>
+                    <ul>
+                        <li><a href = "#" class = "text-white">Our Services</a></li>
+                        <li><a href = "#" class = "text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class = "footer-item">
+                    <h3 class = "footer-head">Contact Us</h3>
+                    <ul class = "appointment-info">
+                        <li>8:00 AM - 11:00 AM</li>
+                        <li>2:00 PM - 05:00 PM</li>
+                        <li>8:00 PM - 11:00 PM</li>
+                        <li>
+                            <i class = "fas fa-envelope"></i>
+                            <span>nileuniversity@gmail.com</span>
+                        </li>
+                        <li>
+                            <i class = "fas fa-phone"></i>
+                            <span>+003 478 2834(00)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class = "footer-links">
+                <ul class = "flex">
+                    <li><a href = "#" class = "text-white flex"> <i class = "fab fa-facebook-f"></i></a></li>
+                    <li><a href = "#" class = "text-white flex"> <i class = "fab fa-twitter"></i></a></li>
+                    <li><a href = "#" class = "text-white flex"> <i class = "fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <!-- end of footer  -->
+
+
+    <!-- custom js -->
+    <script src = "js/script.js"></script>
+</body>
+<script>
+    
+    
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const sliderInner = document.querySelector('.doctor-slider-inner');
+    const sliderItems = document.querySelectorAll('.slider-item');
+    const totalItems = sliderItems.length;
+    const sliderWidth = sliderInner.offsetWidth;
+    let currentIndex = 0;
+    let scrollAmount = 0;
+    const itemWidth = sliderItems[0].offsetWidth + 20; // Adjust 20 as per your margin between items
+
+    function scrollSlider() {
+        if (currentIndex >= totalItems - 1) {
+            currentIndex = 0;
+            scrollAmount = 0;
+        } else {
+            currentIndex++;
+            scrollAmount += itemWidth;
+        }
+
+        sliderInner.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    }
+
+    setInterval(scrollSlider, 1000); // Change image every 3 seconds (adjust as needed)
+});
+
+</script>
+</html>

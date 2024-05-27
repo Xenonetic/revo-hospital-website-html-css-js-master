@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='dep.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Medical Center Departments</title>
+<style>
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px; /* Increased width to accommodate three pictures per row */
+    margin: 0 auto;
+    border: 2px solid #ada6a6;
+    padding: 20px;
+    overflow-y: auto; /* Add vertical scrollbar when content overflows */
+    max-height: 600px; /* Example height, adjust as needed */
+    border-radius: 12px; /* Rounded corners for the container */
+    box-shadow: 0 0 15px rgba(84, 82, 82, 0.1);
+    margin-top: -700px;
+}
+
+.department {
+  text-align: center;
+  border: 2px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+  flex: 1 0 calc(33.33% - 20px); /* Set flex basis for three items per row */
+  margin-bottom: 20px; /* Add some bottom margin for spacing */
+}
+
+.department:hover {
+  transform: scale(1.1); /* Scale up slightly on hover */
+}
+
+.department-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+
+
+.department-name {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+.custom-window {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 900px;
+  height: 300px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+.custom-window.show {
+  display: block;
+  opacity: 1;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.custom-window .book-now-btn {
+  background-color: blue; /* Change the background color to blue */
+  color: white; /* Text color */
+  border-color: blue; /* Border color (optional) */
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{ url_for("static", filename="images/8768.jpg") }}'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.8; 
+    z-index: -1; 
+  }
+</style>
+</head>
+<body >
+    <div class="bg-overlay"></div>
+<div class="con">
+  <div class="row height d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+      <div class="form">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Search anything...">
+        <span class="left-pan"><i class="fa fa-microphone"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  {% for department_data in departments %}
+  <div class="department">
+    <button class="btn btn-primary open-window-btn" data-target="departmentModal{{ department_data.id }}">View Details</button>
+    <div class="department-name">{{ department_data.department }}</div>
+    <img src="{{ url_for('static', filename='images/' + department_data.doctor_images) }}" alt="{{ department_data.department }}" class="department-image">
+  </div>
+  <div class="custom-window" id="departmentModal{{ department_data.id }}">
+    <span class="close-btn" onclick="closeWindow('departmentModal{{ department_data.id }}')">&times;</span>
+    <h2>{{ department_data.department }} Details</h2>
+    <p>This is the details of {{ department_data.department }}.</p>
+    <p>Doctor: {{ department_data.doctor_name }}</p>
+    <p>Appointment Time: {{ department_data.avilable_time }}</p> 
+    <p>Number of Patients: {{ department_data.no_of_patients }}</p>
+    <button class="btn btn-success book-now-btn" onclick="incrementPatients('{{ department_data.id }}')">Book Now</button>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const openWindowBtns = document.querySelectorAll('.open-window-btn');
+  openWindowBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const target = this.getAttribute('data-target');
+      const window = document.getElementById(target);
+      window.classList.add('show');
+      document.querySelector('.overlay').classList.add('show');
+    });
+  });
+});
+
+function closeWindow(id) {
+  const window = document.getElementById(id);
+  window.classList.remove('show');
+  document.querySelector('.overlay').classList.remove('show');
+}
+
+function closeAllWindows() {
+  const windows = document.querySelectorAll('.custom-window');
+  windows.forEach(window => window.classList.remove('show'));
+  document.querySelector('.overlay').classList.remove('show');
+}
+
+</script>
+
+</body>
+</html>

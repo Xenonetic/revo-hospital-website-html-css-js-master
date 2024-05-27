@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='med.css') }}">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+</head>
+<style>
+
+.medicine-item {
+    margin-bottom: 5px; 
+    display: flex;
+    align-items: center;
+}
+
+.medicine-item label {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.medicine-item input[type="checkbox"] {
+    margin-right: 5px;
+}
+</style>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <h1 class="text-placeorder">Place Order</h1>
+        <div class="input_field">
+            <label for="medicine-name" class="text-medecineName">Laboratory Test</label>
+            <input type="text" id="medicine-name" class="text-input" placeholder="Enter Medicine Name">
+            <div class="button-group">
+                <button class="round-button add-button">Add</button>
+                <button class="round-button remove-button">Remove</button>
+            </div>
+        </div>
+        <div class="input_field">
+            <label for="patient-ssn" class="text-paitentSSn">Patient SSN</label>
+            <input type="text" id="patient-ssn" class="text-input" placeholder="Enter Patient SSN">
+        </div>
+        <div class="rounded-box">
+            <div id="medicines-list"></div> <!-- Add this container for medicine items -->
+        </div>
+        <button class="submit-button">Submit</button>
+
+    </div>
+</body>
+<script>
+
+
+$(document).ready(function() {
+    var availableMedicines = [
+    "Mediplexin",
+    "Healithra",
+    "CureAll",
+    "PharmaFix",
+    "MedSol",
+    "RemedyPlus",
+    "Vitalix",
+    "Meditron",
+    "Curegen",
+    "HealthBoost",
+    "Medirestore",
+    "HealWell",
+    "VitaCure",
+    "Pharmalife",
+    "Medicaid",
+    "HealTech",
+    "RemedyCare",
+    "CureWave",
+    "HealthGuard",
+    "MedixPro",
+    "ReliefOne",
+    "VitaMed",
+    "Medicastra",
+    "HealCare",
+    "CureSure",
+    "Pharmasure",
+    "MediHelp",
+    "RecoveryPlus",
+    "VitalityRx",
+    "Mediflex",
+    "HealPro",
+    "CureEase",
+    "HealthEssence",
+    "MedViva",
+    "Pharmawell",
+    "LifespanCare",
+    "HealLife",
+    "CureTech",
+    "HealthFirst",
+    "MedPulse",
+    "RestoreMed",
+    "VitaCare",
+    "CureLink",
+    "HealthLine",
+    "MedSecure",
+    "RemedyGen",
+    "CureOne",
+    "HealthWave",
+    "Medivance",
+    "HealElite"
+];
+    var tabPressed = false;
+
+
+    $(".add-button").on("click", function() {
+        var medicineName = $("#medicine-name").val().trim();
+        if (medicineName && availableMedicines.includes(medicineName)) {
+            var listItem = $("<div class='medicine-item'></div>");
+            var checkbox = $("<input type='checkbox'>");
+            var label = $("<label></label>").text(medicineName);
+            listItem.append(checkbox, label);
+            $("#medicines-list").append(listItem);
+            $("#medicine-name").val(""); 
+        }
+    });
+
+    $(".remove-button").on("click", function() {
+        $(".medicine-item input:checked").parent().remove(); // Remove checked items
+    });
+
+
+    $("#medicine-name").on("input", function() {
+        var searchTerm = $(this).val().toLowerCase();
+        if (!tabPressed) {
+            var matchedMedicine = availableMedicines.find(function(medicine) {
+                return medicine.toLowerCase().startsWith(searchTerm);
+            });
+            if (matchedMedicine) {
+                $(this).data("lastValue", matchedMedicine);
+            } else {
+                $(this).data("lastValue", null);
+            }
+        }
+    });
+
+    $("#medicine-name").on("keydown", function(event) {
+        if (event.keyCode === 9) {
+            tabPressed = true;
+            event.preventDefault();
+            var lastValue = $(this).data("lastValue");
+            if (lastValue) {
+                $(this).val(lastValue);
+                setCaretPosition(this, lastValue.length, lastValue.length);
+            }
+        } else {
+            tabPressed = false;
+        }
+    });
+
+    // Function to set caret position in input field
+    function setCaretPosition(elem, start, end) {
+        if (elem.setSelectionRange) {
+            elem.focus();
+            elem.setSelectionRange(start, end);
+        } else if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    }
+});     
+</script>
+</html>

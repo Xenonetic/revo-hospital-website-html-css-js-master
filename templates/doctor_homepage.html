@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        .custom-container {
+            width: 700px;
+            height: 271px;
+            max-height: 600px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            z-index: 99999;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 600px;
+            margin-left: 150px;
+        }
+
+        body {
+            background-image: url('{{ url_for("static", filename="images/8768.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .right-container {
+            width: 700px;
+            height: 271px;
+            max-height: 600px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            z-index: 99999;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: -271px;
+            margin-left: 1000px;
+            overflow: scroll;
+        }
+
+        .down-container {
+            width: 282px;
+            height: 279px;
+            max-height: 600px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            z-index: 99999;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 171px;
+        }
+
+        .down-more {
+            width: 282px;
+            height: 279px;
+            max-height: 600px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            z-index: 99999;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: -279px;
+            margin-left: 320px;
+        }
+
+        .down-more-more {
+            width: 520px;
+            height: 271px;
+            max-height: 600px;
+            border-radius: 12px;
+            border: 2px solid rgba(204, 228, 255, 0.5);
+            box-shadow: 0 0 25px rgba(204, 228, 255, 0.5);
+            z-index: 99999;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: -279px;
+            margin-left: 680px;
+        }
+
+        .custom-container h3 {
+            margin-bottom: 10px;
+        }
+
+        .custom-container p {
+            line-height: 1.5;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info h2 {
+            margin-bottom: 10px;
+        }
+
+        .info p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Eltaqa Clinic</span> </a>
+                <div class="nav_list">
+                    <a href="{{ url_for('doctor_homepage') }}" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
+                    <a href="{{ url_for('Appointments') }}" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Appointments</span> </a>
+                    <a href="{{ url_for('start_session') }}" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Start Session</span> </a>
+                </div>
+            </div>
+            <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+        </nav>
+    </div>
+    
+    <div class="custom-container">
+        <div class="profile-info">
+            <div class="profile-pic">
+                <img src="{{ url_for('static', filename='images/doc-1.png')}}" alt="Profile Picture">
+            </div>
+            <div class="info">
+                <h2>Dr. {{ doctor['full_name'] }}</h2>
+                <p>Role: General Doctor</p>
+                <p>Email: {{ doctor['email'] }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="right-container">
+        <h1>Appointments</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Appointment Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in patients_appointments %}
+                <tr>
+                    <td>{{ appointment['patient_name'] }}</td>
+                    <td>{{ appointment['appointment_time'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    bodypd = document.getElementById(bodyId),
+                    headerpd = document.getElementById(headerId);
+                
+                if(toggle && nav && bodypd && headerpd){
+                    toggle.addEventListener('click', ()=>{
+                        nav.classList.toggle('show');
+                        toggle.classList.toggle('bx-x');
+                        bodypd.classList.toggle('body-pd');
+                        headerpd.classList.toggle('body-pd');
+                    });
+                }
+            };
+            
+            showNavbar('header-toggle','nav-bar','body-pd','header');
+            
+            const linkColor = document.querySelectorAll('.nav_link');
+            
+            function colorLink(){
+                if(linkColor){
+                    linkColor.forEach(l=> l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            }
+            linkColor.forEach(l=> l.addEventListener('click', colorLink));
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
